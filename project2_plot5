@@ -1,0 +1,13 @@
+#load the data
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+#subset the Maryland data
+Baltimore<-subset(NEI,fips=="24510"&type=="ON-ROAD")
+#aggregate data for MD
+MD<- aggregate(Baltimore[, 'Emissions'], by = list(Baltimore$year), FUN=sum)
+#rename MD variables
+names(MD)<-c("year","Emissions","Location")
+#plotting
+png('project2_plot5.png')
+qplot(Emissions,year,data=MD,color=year,geom=c("point","smooth"),method="lm")
+dev.off()
